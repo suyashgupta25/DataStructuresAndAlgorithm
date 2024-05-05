@@ -46,9 +46,8 @@ public class Solution {
             NodeOrLeaf nodeOrLeaf = new NodeOrLeaf(parent, child);
             nodeOrLeaves.add(nodeOrLeaf);
         }
-        Map<Integer, Tree> mapParent = new HashMap<>();
-        Tree nodeOne = new TreeNode(values.get(0), colors.get(0), 0);
-        mapParent.put(1, nodeOne);
+        prepareIsLeafMap(count);
+        Map<Integer, Tree> mapOfPoints = new HashMap<>();
         for (int i = 0; i < nodeOrLeaves.size(); i++) {
             NodeOrLeaf nodeOrLeaf = nodeOrLeaves.get(i);
             int parentPos = nodeOrLeaf.parent;// 1
@@ -57,41 +56,58 @@ public class Solution {
             int parentIndex = nodeOrLeaf.parent - 1;// 0
             int childIndex = nodeOrLeaf.child - 1;// 2
 
-            if(mapParent.containsKey(parentPos)) {
-                TreeNode nodeParent = (TreeNode) mapParent.get(parentPos);
-                if(isLeaf(childPos)) {
-                    Tree childLeaf = new TreeLeaf(values.get(childIndex), colors.get(childIndex), -1);
-                    nodeParent.addChild(childLeaf);
-                } else {
-                    Tree childNode = new TreeNode(values.get(childIndex), colors.get(childIndex), -1);
-                    nodeParent.addChild(childNode);
-                    mapParent.put(childPos, childNode);
-                }
+            Boolean isLeafParent = isLeaf.get(parentPos);
+
+            TreeNode treeParent = null;
+            if(!mapOfPoints.containsKey(parentPos)) {
+                treeParent = new TreeNode(values.get(parentIndex), colors.get(parentIndex), 0);
+                mapOfPoints.put(parentPos, treeParent);
+            }
+            treeParent = (TreeNode) mapOfPoints.get(parentPos);
+            if(mapOfPoints.containsKey(childPos)) {
+                Tree treeChild = mapOfPoints.get(childPos);
+                treeParent.addChild(treeChild);
             } else {
-                TreeNode nodeNotExist = new TreeNode(values.get(parentIndex), colors.get(parentIndex), 0);
-                if(isLeaf(childPos)) {
+                if(isLeaf.get(childPos)) {
                     Tree childLeaf = new TreeLeaf(values.get(childIndex), colors.get(childIndex), -1);
-                    nodeNotExist.addChild(childLeaf);
+                    treeParent.addChild(childLeaf);
+                    mapOfPoints.put(childPos, childLeaf);
                 } else {
                     Tree childNode = new TreeNode(values.get(childIndex), colors.get(childIndex), -1);
-                    nodeNotExist.addChild(childNode);
-                    mapParent.put(childPos, childNode);
+                    treeParent.addChild(childNode);
+                    mapOfPoints.put(childPos, childNode);
                 }
-                mapParent.put(parentPos, nodeNotExist);
             }
         }
-        return nodeOne;
+        Integer sum = 0;
+        for (Map.Entry<Integer, Tree> entry : mapOfPoints.entrySet()) {
+            if(entry.getValue() instanceof TreeLeaf) {
+                sum = sum + entry.getValue().getValue();
+            }
+        }
+        return mapOfPoints.get(1);
     }
 
     static List<NodeOrLeaf> nodeOrLeaves = new ArrayList<>();
-    static boolean isLeaf(int pos) {
-        for (int i = 0; i < nodeOrLeaves.size(); i++) {
-            NodeOrLeaf nodeOrLeaf = nodeOrLeaves.get(i);
-            if(nodeOrLeaf.parent == pos) {
-                return false;
+    static Map<Integer, Boolean> isLeaf = new HashMap<>();
+    static void prepareIsLeafMap(int maxPos) {
+        for (int j = 1; j < maxPos; j++) {
+            int edges = 0;
+            for (int i = 0; i < nodeOrLeaves.size(); i++) {
+                NodeOrLeaf nodeOrLeaf = nodeOrLeaves.get(i);
+                if(nodeOrLeaf.parent == j) {
+                    ++edges;
+                }
+                if(nodeOrLeaf.child == j) {
+                    ++edges;
+                }
+            }
+            if(edges == 1) {
+                isLeaf.put(j, true);
+            } else {
+                isLeaf.put(j, false);
             }
         }
-        return true;
     }
 
     static class NodeOrLeaf {
