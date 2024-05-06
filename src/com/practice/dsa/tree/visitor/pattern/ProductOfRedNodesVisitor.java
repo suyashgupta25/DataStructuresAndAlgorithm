@@ -2,18 +2,21 @@ package com.practice.dsa.tree.visitor.pattern;
 
 class ProductOfRedNodesVisitor extends TreeVis {
 
-    private int product = 1;
+    private long product = 1;
+    private final long modulo = 1000000007;
 
     public int getResult() {
-        return product;
+        return (int)product;
     }
 
     public void visitNode(TreeNode node) {
         Color color = node.getColor();
         if(color == Color.RED) {
             int value = node.getValue();
-            if(value != 0) {
-                product = product * value;
+            if(value > 0) {
+                product = (product*value) % modulo;
+            } else {
+                product = (product) % modulo;
             }
         }
     }
@@ -22,8 +25,10 @@ class ProductOfRedNodesVisitor extends TreeVis {
         Color color = leaf.getColor();
         if(color == Color.RED) {
             int value = leaf.getValue();
-            if(value != 0) {
-                product = product * value;
+            if(value > 0) {
+                product = (product*value) % modulo;
+            } else {
+                product = (product) % modulo;
             }
         }
     }
