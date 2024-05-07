@@ -14,7 +14,7 @@ public class TwoDArrayRotate {
         for (int i = 0; i < num; i++) {
             List<Integer> list = new ArrayList<>();
             for (int j = 0; j < col; j++) {
-                list.add(i * num + j + 1);
+                list.add(i * col + j + 1);
             }
             matrix.add(list);
         }
@@ -75,16 +75,16 @@ public class TwoDArrayRotate {
         }
     }
 
-    static void right(List<List<Integer>> matrix, int n) {
-        for (int i = 0; i < matrix.size() / 2; i++) {
-            List<Integer> fromTopRow = matrix.get(i + 1);
-            int sizeM = fromTopRow.size();
-            for (int j = sizeM - 1; j > sizeM - i - 2; j--) {
-                updatesMatrix[i][j] = fromTopRow.get(j);
+    static void right(List<List<Integer>> matrix, int rowNum) {
+        for (int i = 1; i <= matrix.size() / 2; i++) {//1,2
+            List<Integer> fromTopRow = matrix.get(i);// 1
+            int rowEndIndex = fromTopRow.size() - 1;// 3
+            for (int j = rowEndIndex; j > rowEndIndex - i; j--) {
+                updatesMatrix[i-1][j] = fromTopRow.get(j);
             }
-            List<Integer> fromBottomRow = matrix.get(n - i - 1);
-            for (int j = sizeM - 1; j > sizeM - i - 2; j--) {
-                updatesMatrix[n - i - 2][j] = fromBottomRow.get(j);
+            List<Integer> fromBottomRow = matrix.get(rowNum - i);
+            for (int j = rowEndIndex; j > rowEndIndex - i; j--) {
+                updatesMatrix[rowNum - i - 1][j] = fromBottomRow.get(j);
             }
         }
     }
@@ -104,7 +104,7 @@ public class TwoDArrayRotate {
         for (int i = 0; i < updatesMatrix.length; i++) {
             Integer[] integers = updatesMatrix[i];
             for (int j = 0; j < integers.length; j++) {
-                System.out.printf("%02d", integers[j]);
+                System.out.printf("%d", integers[j]);
                 System.out.printf(" ");
             }
             System.out.println();
