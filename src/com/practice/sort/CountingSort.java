@@ -14,7 +14,7 @@ import static java.util.stream.Collectors.toList;
 
 public class CountingSort {
 
-    public static void main(String[] args) throws IOException {
+    public static void main2(String[] args) throws IOException {
         File file = new File("file_inputs/count_sort_large_data.txt");
         BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
         int n = Integer.parseInt(bufferedReader.readLine().trim());
@@ -33,14 +33,15 @@ public class CountingSort {
         bufferedReader.close();
     }
 
-    public static void main2(String[] args) {
+    public static void main(String[] args) {
         List<Integer> list = new ArrayList<>();
         list.add(1);
         list.add(1);
         list.add(3);
         list.add(2);
         list.add(0);
-        countingSort(list);
+
+        printArray(countingSort(list).stream().mapToInt(Integer::intValue).toArray());
     }
 
     public static List<Integer> countingSort(List<Integer> arr) {

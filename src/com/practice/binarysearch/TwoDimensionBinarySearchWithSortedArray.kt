@@ -28,7 +28,7 @@ class TwoDimensionBinarySearchWithSortedArray {
                 intArrayOf(11, 12, 13, 14, 15),
                 intArrayOf(16, 17, 18, 19, 20),
             )
-            println("Index = " + search(array, 20).contentToString())
+            println("Index = " + search(array, 9).contentToString())
         }
     }
 }

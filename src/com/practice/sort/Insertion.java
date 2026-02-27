@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 public class Insertion {
 
     public static void insertionSortFix(Integer[] array){
+        System.out.println();
+        printArray(array);
         for (int i = 1; i < array.length; i++) {
             int temp = array[i];
             int j = i - 1;
@@ -15,6 +17,7 @@ public class Insertion {
                 j = j - 1;
             }
             array[j + 1] = temp;
+            printArray(array);
         }
         printArray(array);
     }
