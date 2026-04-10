@@ -5,7 +5,7 @@ package com.practice.leet
 fun checkSet(board: Array<CharArray>): Boolean {
     val rowSet = MutableList(9) { mutableSetOf<Char>() }
     val colSet = MutableList(9) { mutableSetOf<Char>() }
-    val gridSet = mutableMapOf<Pair<Int, Int>, MutableSet<Char>>()
+//    val gridSet = mutableMapOf<Pair<Int, Int>, MutableSet<Char>>()
 
     for (rowIndex in board.indices) {
         val chars = board[rowIndex]
@@ -19,7 +19,7 @@ fun checkSet(board: Array<CharArray>): Boolean {
             val localColSet = colSet.elementAtOrNull(colIndex) ?: mutableSetOf()
 
             val pair = Pair(rowIndex/ 3, colIndex/ 3)
-            val localGridSet = gridSet[pair] ?: mutableSetOf()
+//            val localGridSet = gridSet[pair] ?: mutableSetOf()
 
             if(localRowSet.contains(char)) {
                 return false
@@ -27,14 +27,14 @@ fun checkSet(board: Array<CharArray>): Boolean {
             if(localColSet.contains(char)) {
                 return false
             }
-            if(localGridSet.contains(char)) {
-                return false
-            }
+//            if(localGridSet.contains(char)) {
+//                return false
+//            }
 
             localRowSet.add(char)
             localColSet.add(char)
-            localGridSet.add(char)
-            gridSet[pair] = localGridSet
+//            localGridSet.add(char)
+//            gridSet[pair] = localGridSet
         }
     }
 
